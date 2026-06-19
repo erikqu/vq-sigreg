@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vq-sigreg-pusht"
+version = "0.1.0"
+description = "State-based VQ-SIGReg Push-T reproduction package."
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "gym-pusht",
+    "imageio",
+    "matplotlib",
+    "numpy",
+    "pygame",
+    "PyYAML",
+    "torch==2.5.1",
+    "zarr",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["vq_sigreg"]
+package-dir = { "vq_sigreg" = "." }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".."]
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu121" }

@@ -1,0 +1,30 @@
+seed: 0
+device: cpu
+out_dir: artifacts/vq_sigreg/branch2d
+
+data:
+  n_train: 20000
+  n_test: 4000
+  branches: [2, 3]
+  separation: 0.7
+  thickness: 0.045
+  wiggle: 0.2
+
+model:
+  hidden_dim: 128
+  embedding_dim: 2
+  codebook_size: 4
+
+train:
+  steps: 4000
+  batch_size: 512
+  lr: 0.003
+  grad_clip_norm: 1.0
+  select_temp: 64.0
+  lambda_sigreg: 0.1
+  lambda_readout: 1.0
+  lambda_pred_readout: 1.0
+  lambda_code_entropy: 0.01
+
+eval:
+  tau_mult: 4.0

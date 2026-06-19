@@ -1,0 +1,77 @@
+seed: 3
+device: cuda:1
+out_dir: artifacts/vq_sigreg/pusht_openloop
+
+data:
+  source: real
+  zarr_path: data/pusht/pusht_cchi_v7_replay.zarr
+  horizon: 16
+  obs_steps: 2
+  val_fraction: 0.1
+  batch_size: 256
+  n_train: 12000
+  n_val: 2000
+  max_samples: 20000
+
+model:
+  hidden_dim: 256
+  embedding_dim: 32
+  codebook_size: 16
+  decoder_type: mlp
+  action_dim: 2
+  transformer_layers: 2
+  transformer_heads: 4
+  transformer_dim: 32
+  transformer_ff_mult: 4
+  transformer_dropout: 0.0
+  transformer_causal: false
+  final_align_residual: false
+  final_align_residual_scale: 0.12
+  final_align_gate_scale_px: 96.0
+  delta_action_residual: false
+  delta_action_residual_scale: 0.12
+  delta_action_gate_scale_px: 96.0
+  delta_action_gate_angle_rad: 0.75
+  continuous_action_residual: false
+  continuous_action_residual_scale: 0.06
+  continuous_action_gate_scale_px: 48.0
+  continuous_action_gate_angle_rad: 0.35
+  continuous_action_steps: 1
+
+train:
+  steps: 3000
+  lr: 0.0007
+  weight_decay: 0.00001
+  grad_clip_norm: 1.0
+  select_temp: 64.0
+  lambda_sigreg: 0.02
+  lambda_readout: 1.0
+  lambda_pred_readout: 10.0
+  lambda_latent_pred: 0.0
+  lambda_code_entropy: 0.01
+  lambda_prior: 1.0
+  lambda_reranker: 0.0
+  final_align_weight: 0.0
+  final_align_scale_px: 96.0
+  log_every: 200
+
+sigreg:
+  implementation: official_lejepa
+  num_slices: 64
+  n_points: 17
+  t_max: 3.0
+
+eval:
+  num_plot_contexts: 4
+  collision_radius_px: 52.0
+  selection: ambiguous_nn
+  nn_k: 64
+  nn_pool: 2048
+  min_route_spread_px: 45.0
+  approach_min_agent_block_dist_px: 55.0
+  execution_horizon: 16
+  selector: prior
+  sticky_logit_bonus: 0.0
+  sticky_switch_margin: 0.5
+  sticky_macro_chunks: 0
+  z_switch_penalty_px: 15.0
